@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e9987b902f54592af67cec5bf59948a, type: 3}
+  m_Name: StoneHouse
+  m_EditorClassIdentifier: 
+  roofL: {fileID: 11400000, guid: 4de15e91b72e13f43bc87fbbc5d1db0e, type: 2}
+  roofM: {fileID: 11400000, guid: ae4bbac360cac554296b97d2bb599478, type: 2}
+  roofR: {fileID: 11400000, guid: b0d1545b551efb2479dbc8587a391260, type: 2}
+  roofSpecial: {fileID: 11400000, guid: ffe85de91108496448d80ab622d6610d, type: 2}
+  door: {fileID: 11400000, guid: 3096e64ee44af944a9e1427a84078370, type: 2}
+  wallL: {fileID: 11400000, guid: 491d943217bea3448a85ea3c10982051, type: 2}
+  wallM: {fileID: 11400000, guid: 4686854ca35dc0a4192a1cc1a1a8a3ff, type: 2}
+  wallR: {fileID: 11400000, guid: ab6d19e78aade5843b42c741405bbde4, type: 2}

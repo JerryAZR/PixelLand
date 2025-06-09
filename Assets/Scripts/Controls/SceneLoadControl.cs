@@ -18,6 +18,10 @@ namespace Scripts.Controls
                LoadScene(new SceneIdentifier("MainWorld"), new[]{_playerObject});
           }
 
+          public void MoveToScene(SceneIdentifier scene) {
+               LoadScene(scene, new[]{_playerObject});
+          }
+
           [ServerRpc]
           private void LoadScene(SceneIdentifier scene, NetworkObject[] moves, NetworkConnection conn = null) {
                _ = SceneLoader.Instance.ServerLoadScene(scene, moves, conn!);

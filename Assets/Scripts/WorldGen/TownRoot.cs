@@ -11,16 +11,14 @@ namespace Scripts.WorldGen {
             get => _randomSeed.Value;
             [Server] set => _randomSeed.Value = value;
         }
-        
-        public override void OnStartServer() {
-            RandomSeed = Random.Range(int.MinValue, int.MaxValue);
-        }
 
-        public override void OnStartClient() {
+        public override void OnStartNetwork() {
+            base.OnStartNetwork();
+            if (IsServerStarted) RandomSeed = Random.Range(int.MinValue, int.MaxValue);
             GenerateAllWithSeed(RandomSeed);
         }
 
-        [ObserversRpc(BufferLast = true, RunLocally = true)]
+        // [ObserversRpc(BufferLast = true, RunLocally = true)]
         private void GenerateAllWithSeed(int seed) {
             Debug.Log($"Generating map with seed {seed:X}");
             BoundsInt bounds = new();

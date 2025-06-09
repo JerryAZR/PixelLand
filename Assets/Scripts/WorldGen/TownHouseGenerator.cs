@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using FishNet;
 using Scripts.Controls;
 using Scripts.DataObjects;
+using Scripts.Systems;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -54,12 +56,18 @@ namespace Scripts.WorldGen {
 
             tilemap.SetTile(new Vector3Int(house.DoorX, house.Bounds.yMin), tileset.door);
             triggerHandler.SetAction(new Vector3Int(house.DoorX, house.Bounds.yMin), EnterHouse);
+
+            if (!InstanceFinder.IsServerStarted) return;
+            // Preload house interior
+            int sceneId = HouseEntrance.IdFromCoords(new Vector3Int(house.DoorX, house.Bounds.yMin));
+            SceneIdentifier identifier = new("HouseInterior", sceneId);
+            _ = SceneLoader.Instance.ServerLoadScene(identifier);
         }
 
         private static void EnterHouse(Vector3Int doorPos, Collider2D collider) {
             if (collider.TryGetComponent(out PlayerControl player) && player.IsOwner) {
                 // TODO: Load house interior and move player
-                uint houseId = (uint)(doorPos.y << 16 | doorPos.x);
+                uint houseId = (uint)((doorPos.y << 16) | doorPos.x);
                 Debug.Log($"Entering house {houseId:X} {doorPos}");
             } else {
                 Debug.Log($"Unimplemented collision trigger handler for {collider.gameObject.name}");

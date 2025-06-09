@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1736170733080143892}
   - component: {fileID: 1901737239929854331}
+  - component: {fileID: 5938379660779806588}
   m_Layer: 0
   m_Name: TownRoot
   m_TagString: Untagged
@@ -85,6 +86,26 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 0}
     Scale: {x: 0, y: 0, z: 0}
     IsValid: 0
+--- !u!114 &5938379660779806588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7284326726017059685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be16e7eecf114411b9b04a8a84836c39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 1901737239929854331}
+  _networkObjectCache: {fileID: 0}
+  trainingDummyPrefab: {fileID: 1886167295415748287, guid: 7633aea302fee65438f8eab9ccedc357, type: 3}
+  spawnPoints:
+  - {x: 6, y: -2}
+  - {x: -4, y: -4}
+  - {x: 5, y: 0}
 --- !u!1 &7327848862597489099
 GameObject:
   m_ObjectHideFlags: 0

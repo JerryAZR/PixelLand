@@ -57,7 +57,7 @@ namespace Scripts.Systems {
                 ReplaceScenes = ReplaceOption.All,
                 MovedNetworkObjects = moves,
                 Options = new LoadOptions {
-                    AutomaticallyUnload = true,
+                    AutomaticallyUnload = true, // Avoid scene unloading problems
                     AllowStacking = true,
                     LocalPhysics = scenePhysics
                 },

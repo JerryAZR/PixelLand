@@ -23,12 +23,13 @@ namespace Scripts.WorldGen {
 
             foreach (GameObject prefab in sceneRoots) {
                 GameObject go = Instantiate(prefab);
-                if (go.TryGetComponent<NetworkObject>(out _)) {
-                    try {
-                        InstanceFinder.ServerManager.Spawn(go, scene: gameObject.scene);
-                    } catch (Exception ex) {
-                        Debug.LogException(ex, prefab);
-                    }
+                go.transform.position = transform.position;
+                if (!go.TryGetComponent<NetworkObject>(out _)) continue;
+                try {
+                    InstanceFinder.ServerManager.Spawn(go, scene: gameObject.scene);
+                } catch (Exception ex) {
+                    Debug.Log($"{name}: Exception while spawning {go} for {gameObject.scene}.");
+                    Debug.LogException(ex, prefab);
                 }
             }
             

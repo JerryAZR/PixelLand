@@ -16,7 +16,6 @@ namespace Scripts.WorldGen.PathGeneration {
         public IEnumerable<Vector2Int> Connect(RoomLayout layout, int pathWidth, int rngSeed) {
             _rng = new Random(rngSeed);
             HashSet<Vector2Int> path = new();
-            IndexedSet<Vector2Int> frontier = new();
             // Add initial sets
             foreach (RoomInfo room in layout.Rooms) {
                 Vector2Int[] walkableTiles = room.Tiles.Where(kv => kv.Value).Select(kv => kv.Key).ToArray();
@@ -24,22 +23,21 @@ namespace Scripts.WorldGen.PathGeneration {
                 Vector2Int first = walkableTiles[0];
                 foreach (Vector2Int tile in walkableTiles) {
                     _unionFind.Union(first, tile);
-                    // If any of the tile neighbor is empty, add it to the frontier
-                    foreach (Vector2Int neighbor in tile.Neighbors())
-                        if (!layout.Tiles.ContainsKey(neighbor))
-                            frontier.Add(neighbor);
                 }
             }
 
             // Initialize worker
+            IWalkerSpawner spawner = new BalancedFrontierSpawner();
+            spawner.Initialize(layout.Tiles, _unionFind);
             RectInt pathBounds = layout.Bounds.Expand(pathWidth);
             RandomWalker walker = new(pathBounds, _rng);
 
             // Let it walk
             for (int i = 0; i < 1 << 16; i++) {
-                Vector2Int start = GetRandomFrontierPoint(frontier, layout.Tiles);
+                Vector2Int start = spawner.PickSpawnPoint(_rng);
                 walker.Reset(start, layout.Tiles);
                 HashSet<Vector2Int> result = walker.Walk(pathWidth);
+                // Path quality check
                 if (result.Count < 32 * pathWidth) {
                     // Short paths are discarded unless they add value
                     HashSet<int> nearby = new();
@@ -54,43 +52,30 @@ namespace Scripts.WorldGen.PathGeneration {
                     if (nearby.Count <= 1) continue;
                 }
 
+                // Update unionFind and layout tiles
                 foreach (Vector2Int tile in result) {
                     foreach (Vector2Int neighbor in tile.Neighbors())
                         if (layout.Tiles.TryGetValue(neighbor, out bool floor)) {
                             // Union with existing walkable neighbors
                             if (floor) _unionFind.Union(tile, neighbor);
-                        } else if (!result.Contains(neighbor)) {
-                            // If the tile contains a neighbor that is not yet explored, add to frontier
-                            frontier.Add(tile);
                         }
 
                     // Add self to global map
                     layout.Tiles[tile] = true;
                 }
+                // Update spawner states
+                spawner.CommitPath(result, _unionFind);
 
                 path.UnionWith(result);
-                if (_unionFind.ClusterCount == 1) {
-                    Debug.Log($"Path generation completed after {i} iterations.");
-                    break;
-                }
+                if (_unionFind.ClusterCount != 1) continue;
+                Debug.Log($"Path generation completed after {i} iterations.");
+                break;
             }
 
             if (_unionFind.ClusterCount > 1)
                 Debug.LogWarning("RandomWalkPathGenerator failed to connect all walkable areas.");
 
             return path;
-        }
-
-        private Vector2Int GetRandomFrontierPoint(IndexedSet<Vector2Int> frontier, Dictionary<Vector2Int, bool> map) {
-            while (frontier.Count > 0) {
-                Vector2Int frontierPoint = frontier.ElementAt(_rng.Next(frontier.Count));
-                // Validate that it's a proper frontier
-                if (frontierPoint.Neighbors().Any(neighbor => !map.ContainsKey(neighbor))) return frontierPoint;
-                // Not a frontier, remove from set
-                frontier.Remove(frontierPoint);
-            }
-
-            throw new InvalidOperationException("frontier is empty");
         }
     }
 

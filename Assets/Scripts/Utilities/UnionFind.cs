@@ -15,7 +15,7 @@ namespace Scripts.Utilities {
 
         public int ClusterCount { get; private set; }
 
-        private int FindByIndex(int index) {
+        public int FindByIndex(int index) {
             if (parent[index] != index) parent[index] = FindByIndex(parent[index]); // Path compression
 
             return parent[index];

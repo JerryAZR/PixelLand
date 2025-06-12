@@ -9,8 +9,9 @@ namespace Scripts.WorldGen.RoomPlacement {
         protected virtual void OnDrawGizmos() {
             if (Constraints == null) return;
             RectInt bounds = Constraints.Bounds;
+            Gizmos.color = Color.green;
             Gizmos.DrawWireCube((Vector3)bounds.center + transform.position,
-                new Vector3(bounds.size.x, bounds.size.y, 0));
+                new Vector3(bounds.size.x + 0.25f, bounds.size.y + 0.25f, 0));
         }
 #endif
         public abstract RoomInfo BuildAt(Vector2Int origin, Transform parent, int rngSeed);

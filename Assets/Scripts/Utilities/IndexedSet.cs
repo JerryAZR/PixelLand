@@ -29,6 +29,11 @@ namespace Scripts.Utilities {
             _list.Add(item);
             return true;
         }
+        
+        public void UnionWith(IEnumerable<T> items) {
+            foreach (T item in items)
+                Add(item);
+        }
 
         public bool Remove(T item) {
             if (!_indexMap.TryGetValue(item, out int index)) return false;

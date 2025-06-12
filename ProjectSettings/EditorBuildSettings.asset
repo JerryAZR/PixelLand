@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HouseInterior.unity
     guid: 55571837ad261e640924d4ec73d32200
+  - enabled: 1
+    path: Assets/Scenes/DungeonLevel.unity
+    guid: 1ac90a47b1c1015479237f1f0653343a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

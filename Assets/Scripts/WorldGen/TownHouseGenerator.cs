@@ -3,6 +3,7 @@ using FishNet;
 using Scripts.Controls;
 using Scripts.DataObjects;
 using Scripts.Systems;
+using Scripts.WorldGen.Town;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
